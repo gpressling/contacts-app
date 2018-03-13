@@ -1,29 +1,37 @@
 class V1::ContactsListController < ApplicationController
-  def first_contact
-    contact = Contact.first
-    render json: {
-      first_name: contact.first_name,
-      last_name: contact.last_name,
-      email: contact.email,
-      phone_number: contact.phone_number
-    }
+  def index
+    contacts = Contact.all
+    render json: contacts.as_json
   end
-  def second_contact
-    contact = Contact.second
-    render json: {
-      first_name: contact.first_name,
-      last_name: contact.last_name,
-      email: contact.email,
-      phone_number: contact.phone_number
-    }
+
+  def create
+    contact = Contact.new(
+    first_name: params[:first_name],
+    last_name: params[:last_name],
+    email: params[:email],
+    phone_number: params[:phone_number]
+    )
+    contact.save
+    render json: contact.as_json
   end
-  def third_contact
-    contact = Contact.third
-    render json: {
-      first_name: contact.first_name,
-      last_name: contact.last_name,
-      email: contact.email,
-      phone_number: contact.phone_number
-    }
+
+  def show
+    contact = Contact.find_by(id: params[:id])
+    render json: contact.as_json
+  end
+  def update
+    contact = Contact.find_by(id: params[:id])
+    contact.first_name = params[:name] || contact.first_name
+    contact.last_name = params[:last_name] || contact.last_name
+    contact.email = params[:email] || contact.email
+    contact.phone_number = params[:phone_number] || contact.phone_number
+    contact.save
+    render json: contact.as_json
+  end
+
+  def destroy
+    contact = Contact.find_by(id: params[:id])
+    contact.destroy
+    render json:{message: "Contact successfully destroyed."}
   end
 end

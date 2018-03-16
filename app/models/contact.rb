@@ -1,10 +1,10 @@
 class Contact < ApplicationRecord
-  def first_name_list
-    first_name.split(", ")
+  def full_name
+    "#{last_name}, #{first_name}"
   end
 
-  def directions_list
-    last_name.split(", ")
+  def friendly_updated_time
+    updated_at.strftime("%B %e, %Y")
   end
 
   def friendly_created_at
@@ -17,7 +17,8 @@ class Contact < ApplicationRecord
       last_name: last_name,
       email: email,
       phone_number: phone_number,
-      directions: directions_list,
+      full_name: full_name,
+      updated_at: friendly_updated_time,
       created_at: friendly_created_at,
     }
   end

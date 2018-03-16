@@ -13,6 +13,12 @@ if input_option == "1"
   response = Unirest.get("http://localhost:3000/v1/contacts")
   contacts = response.body
   p contacts
+elsif input_option == "1.1"
+  print "enter contact id: "
+  contact_id = gets.chomp
+  response = Unirest.get("http://localhost:3000/v1/contacts?query=#{contact_id}")
+  contacts = response.body
+  puts JSON.pretty_generate(contacts)
 elsif input_option == "2"
   print "enter contact id: "
   contact_id = gets.chomp

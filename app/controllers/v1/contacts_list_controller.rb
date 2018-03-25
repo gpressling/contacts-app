@@ -1,4 +1,13 @@
 class V1::ContactsListController < ApplicationController
+
+  before_action :authenticate_user
+  
+  if current_user
+    contacts = current_user.contacts
+    render json: contacts.as_json
+    else
+      render json: []
+  end
   def index
     contacts = Contact.all
 
@@ -20,8 +29,11 @@ class V1::ContactsListController < ApplicationController
     email: params[:email],
     phone_number: params[:phone_number]
     )
-    contact.save
-    render json: contact.as_json
+    if contact.save
+      render json: contact.as_json
+  else
+    render json: {errors: contact.errors.full_messages}, status: :bad_request
+    end
   end
 
   def show

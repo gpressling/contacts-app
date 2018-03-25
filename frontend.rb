@@ -1,5 +1,27 @@
 require "unirest"
 
+puts "Log in!"
+print "Email: "
+email = "greg@email.com"
+print "Password: "
+password = "password"
+response = Unirest.post("http://localhost:3000/user_token", 
+  parameters: {
+    auth: {
+      email: email,
+      password: password
+    }
+  }
+)
+jwt = response.body["jwt"]
+Unirest.default_header("Authorization", "Bearer #{jwt}")
+if input_option == "log out"
+  jwt = ""
+  Unirest.clear_default_headers()
+end
+
+system "clear"
+puts "[1] Signup"
 system "clear"
 puts "Choose an Contact: "
 puts "[1] See all contacts"
